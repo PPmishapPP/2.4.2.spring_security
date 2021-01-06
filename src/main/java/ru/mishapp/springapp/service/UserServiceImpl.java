@@ -3,6 +3,7 @@ package ru.mishapp.springapp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mishapp.springapp.dao.UserDao;
+import ru.mishapp.springapp.models.Role;
 import ru.mishapp.springapp.models.User;
 
 import javax.transaction.Transactional;
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void addUser(User user) {
+    public void saveUser(User user) {
         userDao.addUser(user);
     }
 
@@ -40,5 +41,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(long id) {
         return userDao.getUser(id);
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login);
+    }
+
+    @Transactional
+    @Override
+    public Role getRole(String authority) {
+        Role role = userDao.getRole(authority);
+        if (role == null){
+            role = new Role(authority);
+            userDao.saveRole(role);
+        }
+        return userDao.getRole(authority);
     }
 }
