@@ -21,7 +21,7 @@
         <td th:text="${user.getFirstName()}"></td>
         <td th:text="${user.getLastName()}"></td>
         <td th:text="${user.getAge()}"></td>
-        <td><a th:href="@{/user/{id}(id=${user.getUsername()})}" th:text="${user.getUsername()}"></a></td>
+        <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.getPassword()}"></td>
         <td>
             <div th:each="role : ${user.getAuthorities()}">
@@ -37,6 +37,7 @@
     </tr>
 </table>
 <a th:href="@{/admin/new}">Добавить</a>
+
 <div th:fragment="logout">
     <a th:href="@{/logout}">Выход</a>
 </div>

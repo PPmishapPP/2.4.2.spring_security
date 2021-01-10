@@ -15,23 +15,27 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping
-    public String mainPage(Model model) {
+    public String adminPage(Model model) {
         List<User> list = userService.getAllUsers();
         model.addAttribute("users", list);
-        return "index";
+        return "admin";
     }
 
     @GetMapping("/{id}")
-    public String changeUser(@PathVariable("id") long id, Model model) {
+    public String changeUserPage(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("action", "Изменить");
         return "change";
     }
 
     @GetMapping("/new")
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUserPage(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("action", "Добавить");
         return "change";
     }
 
@@ -42,12 +46,11 @@ public class AdminController {
     }
 
     @PostMapping
-    public String mainPost(@ModelAttribute("user") User user, @RequestParam("role") String authority){
-        user.addRole(userService.getRole("ROLE_USER"));
-        if (authority.equals("admin")){
-            user.addRole(userService.getRole("ROLE_ADMIN"));
+    public String saveUser(@ModelAttribute("user") User user, @RequestParam("role_select") Long[] roleIds) {
+        for (Long id : roleIds) {
+            user.addRole(userService.getRole(id));
         }
-        userService.updateUser(user);
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 }

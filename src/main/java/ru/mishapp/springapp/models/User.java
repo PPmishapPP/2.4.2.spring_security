@@ -1,8 +1,6 @@
 package ru.mishapp.springapp.models;
 
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,20 +26,20 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinTable (name = "user_role",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> authorities = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public void addRole(Role role){
-        this.authorities.add(role);
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
 
@@ -89,8 +87,8 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public void setAuthorities(Set<Role> authorities) {
-        this.authorities = authorities;
+    public void setRoles(Set<Role> authorities) {
+        this.roles = authorities;
     }
 
     @Override
@@ -102,13 +100,13 @@ public class User implements UserDetails {
                 ", age=" + age +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", authorities=" + authorities +
+                ", authorities=" + roles +
                 '}';
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return roles;
     }
 
     @Override

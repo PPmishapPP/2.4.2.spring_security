@@ -23,17 +23,14 @@
     <input id="password" type="text" th:field="*{password}">
     <br/>
 
-    <label>user
-        <input type="radio" name="role" value="user" checked>
-    </label>
-    <br/>
-    <label>admin
-        <input type="radio" name="role" value="admin" >
-    </label>
+    <select name="role_select" multiple>
+        <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getAuthority()}"/>
+    </select>
+
 
     <br/>
-    <input name="change" type="submit" value="Изменить">
+    <input name="change" type="submit" value="Добавить" th:value="${action}">
 </form>
-<div th:insert="index :: logout"></div>
+<div th:insert="admin :: logout"></div>
 </body>
 </html>

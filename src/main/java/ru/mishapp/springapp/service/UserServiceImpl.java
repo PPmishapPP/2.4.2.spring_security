@@ -18,13 +18,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void saveUser(User user) {
-        userDao.addUser(user);
-    }
-
-    @Transactional
-    @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+        userDao.saveUser(user);
     }
 
     @Transactional
@@ -48,14 +42,13 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByLogin(login);
     }
 
-    @Transactional
     @Override
-    public Role getRole(String authority) {
-        Role role = userDao.getRole(authority);
-        if (role == null){
-            role = new Role(authority);
-            userDao.saveRole(role);
-        }
-        return userDao.getRole(authority);
+    public Role getRole(long id) {
+        return userDao.getRole(id);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return userDao.getAllRoles();
     }
 }
