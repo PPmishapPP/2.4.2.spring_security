@@ -11,8 +11,12 @@ import ru.mishapp.springapp.service.UserService;
 @Controller
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/login")
     public String loginPage() {
