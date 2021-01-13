@@ -15,12 +15,15 @@ public class Role implements GrantedAuthority {
     @Column(name = "authority")
     private String authority;
 
-
-    public Role(Long id) {
-        this.id = id;
-    }
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     public Role() {
+    }
+
+    @Override
+    public String getAuthority() {
+        return authority;
     }
 
     public Long getId() {
@@ -35,9 +38,11 @@ public class Role implements GrantedAuthority {
         this.authority = authority;
     }
 
-    @Override
-    public String getAuthority() {
-        return authority;
+    public List<User> getUsers() {
+        return users;
     }
 
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }
