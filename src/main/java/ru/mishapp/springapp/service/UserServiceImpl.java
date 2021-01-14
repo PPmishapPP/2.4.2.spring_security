@@ -1,9 +1,8 @@
 package ru.mishapp.springapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.mishapp.springapp.dao.RoleDao;
 import ru.mishapp.springapp.dao.UserDao;
 import ru.mishapp.springapp.models.Role;
 import ru.mishapp.springapp.models.User;
@@ -15,10 +14,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final RoleDao roleDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
         this.userDao = userDao;
+        this.roleDao = roleDao;
     }
 
 
@@ -51,11 +52,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Role getRole(long id) {
-        return userDao.getRole(id);
+        return roleDao.getRole(id);
     }
 
     @Override
     public List<Role> getAllRoles() {
-        return userDao.getAllRoles();
+        return roleDao.getAllRoles();
     }
 }

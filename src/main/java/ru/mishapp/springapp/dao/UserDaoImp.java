@@ -53,16 +53,4 @@ public class UserDaoImp implements UserDao {
         }
         return list.get(0);
     }
-
-    @Override
-    public Role getRole(long id) {
-        return entityManager.find(Role.class, id);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return entityManager
-                .createQuery("select role from Role role", Role.class)
-                .getResultList();
-    }
 }
